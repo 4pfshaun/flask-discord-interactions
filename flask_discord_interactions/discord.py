@@ -318,6 +318,7 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
         app.custom_id_handlers = self.custom_id_handlers
         app.autocomplete_handlers = self.autocomplete_handlers
         app.discord_token = None
+        self.data = None
     
     def __guild_info(self):
         if not self.app.config.get("DISCORD_BOT_TOKEN"):
@@ -330,16 +331,16 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
         )
         
         r.raise_for_status()
-        return r.json()
+        self.data = r.json()
 
     @property 
     def guild_count(self) -> int:
-        data = self.__guild_info()
+        data = self.data or self.__guild_info()
         return len(data)
                      
     @property 
     def users(self) -> int: 
-        data = self.__guild_info()
+        data = self.data or self.__guild_info()
         return sum(d['approximate_member_count'] for d in data)
 
     @static_or_instance
