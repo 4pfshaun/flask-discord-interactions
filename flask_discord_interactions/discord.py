@@ -374,7 +374,8 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
             headers={"Content-Type": "application/x-www-form-urlencoded"},
             auth=(app.config["DISCORD_CLIENT_ID"], app.config["DISCORD_CLIENT_SECRET"]),
         )
-
+        
+        print(response.text)
         response.raise_for_status()
         app.discord_token = response.json()
         app.discord_token["expires_on"] = (
