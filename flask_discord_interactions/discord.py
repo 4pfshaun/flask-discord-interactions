@@ -34,7 +34,6 @@ class InteractionType:
     APPLICATION_COMMAND_AUTOCOMPLETE = 4
     MODAL_SUBMIT = 5
 
-
 class DiscordInteractionsBlueprint:
     """
     Represents a collection of :class:`ApplicationCommand` s.

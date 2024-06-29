@@ -274,7 +274,9 @@ class Command:
             data["default_member_permissions"] = str(self.default_member_permissions)
 
         if self.dm_permission is not None:
-            data["dm_permission"] = self.dm_permission
+            data["contexts"] = [0, 1, 2]
+        else:
+            data["contexts"] = [0]
 
         return data
 
