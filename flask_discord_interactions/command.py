@@ -268,17 +268,14 @@ class Command:
             "options": self.options,
             "name_localizations": self.name_localizations,
             "description_localizations": self.description_localizations,
+            "contexts": [0, 1, 2]
         }
 
         if self.default_member_permissions is not None:
             data["default_member_permissions"] = str(self.default_member_permissions)
 
-        if self.dm_permission is not None:
-            data["contexts"] = [0, 1, 2]
-            data['integration_types'] = [0, 1]
-        else:
-            data["contexts"] = [0]
-            data['integration_types'] = [0]
+        if self.dm_permission:
+            data["integration_types"] = [0, 1]
 
         return data
 
