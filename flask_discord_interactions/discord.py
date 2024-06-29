@@ -332,6 +332,7 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
         
         r.raise_for_status()
         self.data = r.json()
+        return r.json()
 
     @property 
     def guild_count(self) -> int:
