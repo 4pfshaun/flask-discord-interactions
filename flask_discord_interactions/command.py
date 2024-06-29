@@ -275,8 +275,10 @@ class Command:
 
         if self.dm_permission is not None:
             data["contexts"] = [0, 1, 2]
+            data['integration_types'] = [0, 1]
         else:
             data["contexts"] = [0]
+            data['integration_types'] = [0]
 
         return data
 
