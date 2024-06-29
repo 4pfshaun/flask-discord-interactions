@@ -310,7 +310,8 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
         app.config.setdefault("DISCORD_CLIENT_ID", "")
         app.config.setdefault("DISCORD_PUBLIC_KEY", "")
         app.config.setdefault("DISCORD_CLIENT_SECRET", "")
-        app.config.setdefault("DISCORD_SCOPE", "applications.commands.update identify guilds")
+        app.config.setdefault("DISCORD_BOT_TOKEN", None)
+        app.config.setdefault("DISCORD_SCOPE", "applications.commands.update")
         app.config.setdefault("DONT_VALIDATE_SIGNATURE", False)
         app.config.setdefault("DONT_REGISTER_WITH_DISCORD", False)
         app.discord_commands = self.discord_commands
@@ -319,12 +320,16 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
         app.discord_token = None
     
     def __guild_info(self):
+        if not self.app.config.get("DISCORD_BOT_TOKEN"):
+            raise Exception("This property requires the discord bot token")
+        
         r = requests.get(
             self.app.config['DISCORD_BASE_URL'] + "/users/@me/guilds",
             params={'with_counts': True},
             headers=self.auth_headers(self.app)
         )
-
+        
+        r.raise_for_status()
         return r.json()
 
     @property 
@@ -386,7 +391,7 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
     def auth_headers(app: Flask):
         """
         Get the Authorization header required for HTTP requests to the
-        Discord API.
+        Discord API. (or the header containing the bot's token)
 
         Parameters
         ----------
@@ -398,6 +403,9 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
         Dict[str, str]
             The Authorization header.
         """
+        
+        if t := app.config.get("DISCORD_BOT_TOKEN"):
+            return {"Authorization": f"Bot {t}"}
 
         if app.discord_token is None or time.time() > app.discord_token["expires_on"]:
             DiscordInteractions.fetch_token(app)
