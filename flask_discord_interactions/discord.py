@@ -310,13 +310,32 @@ class DiscordInteractions(DiscordInteractionsBlueprint):
         app.config.setdefault("DISCORD_CLIENT_ID", "")
         app.config.setdefault("DISCORD_PUBLIC_KEY", "")
         app.config.setdefault("DISCORD_CLIENT_SECRET", "")
-        app.config.setdefault("DISCORD_SCOPE", "applications.commands.update")
+        app.config.setdefault("DISCORD_SCOPE", "applications.commands.update identify guilds")
         app.config.setdefault("DONT_VALIDATE_SIGNATURE", False)
         app.config.setdefault("DONT_REGISTER_WITH_DISCORD", False)
         app.discord_commands = self.discord_commands
         app.custom_id_handlers = self.custom_id_handlers
         app.autocomplete_handlers = self.autocomplete_handlers
         app.discord_token = None
+    
+    def __guild_info(self):
+        r = requests.get(
+            self.app.config['DISCORD_BASE_URL'] + "/users/@me/guilds",
+            params={'with_counts': True},
+            headers=self.auth_headers(self.app)
+        )
+
+        return r.json()
+
+    @property 
+    def guild_count(self) -> int:
+        data = self.__guild_info()
+        return len(data)
+                     
+    @property 
+    def users(self) -> int: 
+        data = self.__guild_info()
+        return sum(d['approximate_member_count'] for d in data)
 
     @static_or_instance
     def fetch_token(self, app: Flask = None):
