@@ -64,8 +64,10 @@ class Command:
         value to ``ApplicationCommandType.CHAT_INPUT``.
     default_member_permissions: int
         A permission integer defining the required permissions a user must have to run the command
-    dm_permission: bool
-        Indicates whether the command can be used in DMs
+    guild_install: bool
+        Indicates whether the command can be used in Guilds
+    user_install: bool
+        Indicates whether the command can be used in DM's
     discord: DiscordInteractions
         DiscordInteractionsBlueprint instance which this Command is associated
         with.
@@ -81,7 +83,8 @@ class Command:
         annotations: Dict[str, str],
         type: int = ApplicationCommandType.CHAT_INPUT,
         default_member_permissions: int = None,
-        dm_permission: bool = None,
+        guild_install: bool = True,
+        user_install: bool = False,
         name_localizations: Dict[str, str] = None,
         description_localizations: Dict[str, str] = None,
         discord: "DiscordInteractions" = None,
@@ -93,7 +96,8 @@ class Command:
         self.annotations = annotations or {}
         self.type = type
         self.default_member_permissions = default_member_permissions
-        self.dm_permission = dm_permission
+        self.guild_install = guild_install
+        self.user_install = user_install
         self.name_localizations = name_localizations
         self.description_localizations = description_localizations
         self.discord = discord
@@ -268,14 +272,20 @@ class Command:
             "options": self.options,
             "name_localizations": self.name_localizations,
             "description_localizations": self.description_localizations,
-            "contexts": [0, 1, 2]
         }
 
         if self.default_member_permissions is not None:
             data["default_member_permissions"] = str(self.default_member_permissions)
 
-        if self.dm_permission:
-            data["integration_types"] = [0, 1]
+        if self.guild_install and not self.user_install:
+            data["integration_types"] = [0]
+            data['contexts'] = [0]
+        elif not self.guild_install and self.user_install:
+            data['integration_types'] = [1]
+            data['contexts'] = [1, 2]
+        else:
+            data['integration_types'] = [0, 1]
+            data['contexts'] = [0, 1, 2]
 
         return data
 

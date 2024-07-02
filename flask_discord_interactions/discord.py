@@ -56,7 +56,8 @@ class DiscordInteractionsBlueprint:
         annotations: Dict[str, str] = None,
         type: int = ApplicationCommandType.CHAT_INPUT,
         default_member_permissions: int = None,
-        dm_permission: bool = None,
+        guild_install: bool = True,
+        user_install: bool = False,
         name_localizations: Dict[str, str] = None,
         description_localizations: Dict[str, str] = None,
     ):
@@ -96,7 +97,8 @@ class DiscordInteractionsBlueprint:
             annotations=annotations,
             type=type,
             default_member_permissions=default_member_permissions,
-            dm_permission=dm_permission,
+            guild_install=guild_install,
+            user_install=user_install,
             name_localizations=name_localizations,
             description_localizations=description_localizations,
             discord=self,
@@ -113,7 +115,8 @@ class DiscordInteractionsBlueprint:
         annotations: Dict[str, str] = None,
         type: int = ApplicationCommandType.CHAT_INPUT,
         default_member_permissions: int = None,
-        dm_permission: bool = None,
+        guild_install: bool = True,
+        user_install: bool = False,
         name_localizations: Dict[str, str] = None,
         description_localizations: Dict[str, str] = None,
     ):
@@ -140,8 +143,10 @@ class DiscordInteractionsBlueprint:
             The ``ApplicationCommandType`` of the command.
         default_member_permissions: int
             A permission integer defining the required permissions a user must have to run the command
-        dm_permission: bool
-            Indicates whether the command can be used in DMs
+        guild_install: bool
+            Indicates whether the command can be used in Guilds
+        user_install: bool
+            Indicates whether the command can be used in DM's
 
         Returns
         -------
@@ -158,7 +163,8 @@ class DiscordInteractionsBlueprint:
                 annotations=annotations,
                 type=type,
                 default_member_permissions=default_member_permissions,
-                dm_permission=dm_permission,
+                guild_install=guild_install,
+                user_install=user_install,
                 name_localizations=name_localizations,
                 description_localizations=description_localizations,
             )
@@ -173,7 +179,8 @@ class DiscordInteractionsBlueprint:
         *,
         is_async: bool = False,
         default_member_permissions: int = None,
-        dm_permission: bool = None,
+        guild_install: bool = True,
+        user_install: bool = False,
         name_localizations: Dict[str, str] = None,
         description_localizations: Dict[str, str] = None,
     ):
@@ -196,8 +203,10 @@ class DiscordInteractionsBlueprint:
             get an :class:`.AsyncContext` instead of a :class:`Context`.)
         default_member_permissions: int
             A permission integer defining the required permissions a user must have to run the command
-        dm_permission: bool
-            Indicates whether the command canbe used in DMs
+        guild_install: bool
+            Indicates whether the command can be used in Guilds
+        user_install: bool
+            Indicates whether the command can be used in DM's
 
         Returns
         -------
@@ -210,7 +219,8 @@ class DiscordInteractionsBlueprint:
             description=description,
             is_async=is_async,
             default_member_permissions=default_member_permissions,
-            dm_permission=dm_permission,
+            guild_install=guild_install,
+            user_install=user_install,
             name_localizations=name_localizations,
             description_localizations=description_localizations,
         )

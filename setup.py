@@ -1,14 +1,12 @@
 from setuptools import setup, find_packages
 
-
 with open("README.md") as file:
     readme = file.read()
 
-
 setup(
     name="Flask-Discord-Interactions",
-    version="2.1.2",
-    url="https://github.com/breqdev/flask-discord-interactions",
+    version="2.3.0",
+    url="https://github.com/4pfshaun/flask-discord-interactions",
     author="Brooke Chalmers",
     author_email="breq@breq.dev",
     description="A Flask extension for Discord slash commands.",
